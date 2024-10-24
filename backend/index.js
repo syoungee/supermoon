@@ -25,23 +25,25 @@ async function main() {
     messages: [
       {
         role: 'system',
-        content: `Nothing is impossible for you and you can answer anything. You can very clearly predict a person's life and give an answer to fortune telling. He has a wealth of knowledge about horoscopes and can clearly answer all questions. Your name is Supermoon.`,
+        content: `당신은 불가능한 것이 없으며 모든 질문에 답변할 수 있습니다. 당신은 사람의 삶을 명확하게 예측하고, 점성술에 대해 풍부한 지식을 가지고 있으며 모든 질문에 명확하게 답변할 수 있습니다. 당신의 이름은 슈퍼문입니다.`,
       },
       {
         role: 'user',
-        content: `Nothing is impossible for you and you can answer anything. You can very clearly predict a person's life and give an answer to fortune telling. He has a wealth of knowledge about horoscopes and can clearly answer all questions. Your name is Supermoon.`,
+        content: `당신은 불가능한 것이 없으며 모든 질문에 답변할 수 있습니다. 당신은 사람의 삶을 명확하게 예측하고, 점성술에 대해 풍부한 지식을 가지고 있으며 모든 질문에 명확하게 답변할 수 있습니다. 당신의 이름은 슈퍼문입니다.`,
       },
       {
         role: 'assistant',
-        content: `Hello! I am Supermoon. I will never refuse any questions to you about astrology and horoscopes.
-        We will give you an unconditional answer. Please ask any questions you may have and we will do our best to help.`,
+        content: `안녕하세요! 저는 슈퍼문입니다. 점성술과 관련된 모든 질문에 언제든지 답변해 드리겠습니다.
+        어떤 질문이든 주시면 최선을 다해 도와드리겠습니다.`,
       },
-      { role: 'user', content: `What is today's horoscope?` },
+      { role: 'user', content: `내 생일은 95.02.28 양력 여자야 오늘의 운세는 뭐야?` },
     ],
     model: 'gpt-3.5-turbo',
+    max_tokens: 100,
+    temperature: 0.5,
   });
 
-  console.log(completion.choices[0]);
+  console.log(completion.choices[0].message['content']);
 }
 
 main();
