@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>운세 보는 달덩이🌝</title>
+  </head>
+  <body>
+    <button onclick="sendFortuneRequest()">오늘의 운세는?</button>
+    <script>
+      async function sendFortuneRequest() {
+        try {
+          const res = await fetch('http://localhost:3001/fortuneTell', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: 'John' }),
+          });
+
+          if (!res.ok) {
+            throw new Error('Request failed with status ' + res.status);
+          }
+
+          const data = await res.json();
+          console.log('response:', data);
+          alert(`오늘의 운세: ${data.assistant}`); // 예시로 운세를 alert로 보여주기
+        } catch (error) {
+          console.error('Error:', error);
+          alert('운세를 불러오는데 문제가 발생했습니다.');
+        }
+      }
+    </script>
+  </body>
+</html>
