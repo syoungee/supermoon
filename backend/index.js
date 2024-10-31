@@ -37,6 +37,7 @@ app.post('/fortuneTell', async function (req, res) {
 
     const fortune = completion.choices[0].message['content'];
     console.log(fortune);
+    console.log('아주 잘 나오고 있어');
     res.json({
       assistant: fortune,
     });
