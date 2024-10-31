@@ -5,18 +5,88 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>운세 보는 달덩이🌝</title>
+    <style>
+      /* 세로 가운데 정렬을 위한 스타일 */
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      label,
+      select,
+      input,
+      button {
+        margin: 5px 0;
+      }
+    </style>
   </head>
   <body>
-    <button onclick="sendFortuneRequest()">오늘의 운세는?</button>
+    <h1>운세 보는 달덩이 🌝</h1>
+
+    <label for="name">이름:</label>
+    <input type="text" id="name" placeholder="이름을 입력하세요" />
+
+    <label for="birthdate">생년월일:</label>
+    <input type="date" id="birthdate" />
+
+    <label for="gender">성별:</label>
+    <select id="gender">
+      <option value="male">남자</option>
+      <option value="female">여자</option>
+    </select>
+
+    <label for="birthtime">태어난 시간:</label>
+    <select id="birthtime">
+      <option value="unknown">모름</option>
+      <option value="자">자시 (23:00 - 00:59)</option>
+      <option value="축">축시 (01:00 - 02:59)</option>
+      <option value="인">인시 (03:00 - 04:59)</option>
+      <option value="묘">묘시 (05:00 - 06:59)</option>
+      <option value="진">진시 (07:00 - 08:59)</option>
+      <option value="사">사시 (09:00 - 10:59)</option>
+      <option value="오">오시 (11:00 - 12:59)</option>
+      <option value="미">미시 (13:00 - 14:59)</option>
+      <option value="신">신시 (15:00 - 16:59)</option>
+      <option value="유">유시 (17:00 - 18:59)</option>
+      <option value="술">술시 (19:00 - 20:59)</option>
+      <option value="해">해시 (21:00 - 22:59)</option>
+    </select>
+
+    <button onclick="sendFortuneRequest()">운세 보기</button>
+
     <script>
       async function sendFortuneRequest() {
+        const name = document.getElementById('name').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const gender = document.getElementById('gender').value;
+        const birthtime = document.getElementById('birthtime').value;
+
+        if (!name || !birthdate) {
+          alert('이름과 생년월일을 입력해주세요.');
+          return;
+        }
+
         try {
           const res = await fetch('http://localhost:3001/fortuneTell', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name: 'John' }),
+            body: JSON.stringify({
+              name: name,
+              birthdate: birthdate,
+              gender: gender,
+              birthtime: birthtime,
+            }),
           });
 
           if (!res.ok) {
@@ -25,7 +95,7 @@
 
           const data = await res.json();
           console.log('response:', data);
-          alert(`오늘의 운세: ${data.assistant}`); // 예시로 운세를 alert로 보여주기
+          alert(`오늘의 운세: ${data.assistant}`);
         } catch (error) {
           console.error('Error:', error);
           alert('운세를 불러오는데 문제가 발생했습니다.');

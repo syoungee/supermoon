@@ -12,13 +12,18 @@ const app = express();
 // CORS 설정
 app.use(cors());
 
-// JSON 및 URL 인코딩 미들웨어 (필요 시 추가)
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+// JSON 미들웨어 활성화
+app.use(express.json());
 
 app.post('/fortuneTell', async function (req, res) {
   try {
-    // 기본값으로 설정된 메시지
+    // 프론트엔드에서 전송된 데이터를 추출
+    const { name, birthdate, gender, birthtime } = req.body;
+
+    // 사용자 정보가 포함된 메시지 생성
+    const userMessage = `내 이름은 ${name}이고, 생일은 ${birthdate}이며, 성별은 ${gender}야. 태어난 시간은 ${birthtime}야. 오늘의 운세는 뭐야?`;
+
+    // OpenAI API 요청
     const completion = await client.chat.completions.create({
       messages: [
         {
@@ -27,7 +32,7 @@ app.post('/fortuneTell', async function (req, res) {
         },
         {
           role: 'user',
-          content: `내 생일은 95.02.28 양력 여자야 오늘의 운세는 뭐야?`,
+          content: userMessage,
         },
       ],
       model: 'gpt-3.5-turbo',
@@ -37,7 +42,6 @@ app.post('/fortuneTell', async function (req, res) {
 
     const fortune = completion.choices[0].message['content'];
     console.log(fortune);
-    console.log('아주 잘 나오고 있어');
     res.json({
       assistant: fortune,
     });
