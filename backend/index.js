@@ -20,6 +20,10 @@ app.post('/fortuneTell', async function (req, res) {
     // 프론트엔드에서 전송된 데이터를 추출
     const { name, birthdate, gender, birthtime } = req.body;
 
+    const { userMessages, assistantMessages } = req.body;
+    console.log('user message>>', userMessages);
+    console.log('assistant message>>', assistantMessages);
+
     // 사용자 정보가 포함된 메시지 생성
     const userMessage = `내 이름은 ${name}이고, 생일은 ${birthdate}이며, 성별은 ${gender}야. 태어난 시간은 ${birthtime}야. 오늘의 운세는 뭐야?`;
 
