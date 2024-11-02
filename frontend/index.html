@@ -63,6 +63,18 @@
 
     <button onclick="sendFortuneRequest()">운세 보기</button>
 
+    <!-- 운세 확인 컨테이너 -->
+    <div class="chat-container">
+      <div class="chat-bubble user-bubble">안녕하세요! 운세를 확인 해주세요.</div>
+      <div class="chat-bubble bot-bubble" id="fortuneResponse">
+        <!-- The fortune response will appear here -->
+      </div>
+      <input type="text" class="chat-input" id="messageInput" placeholder="메세지를 입력하세요..." />
+      <button class="send-button" onclick="sendMessage()">보내기</button>
+    </div>
+    <!-- <input type="text" class="chat-input" id="messageInput" placeholder="메세지를 입력하세요..." />
+    <button class="send-button" onclick="sendMessage()">보내기</button> -->
+
     <script>
       async function sendFortuneRequest() {
         const name = document.getElementById('name').value;
@@ -99,6 +111,73 @@
         } catch (error) {
           console.error('Error:', error);
           alert('운세를 불러오는데 문제가 발생했습니다.');
+        }
+      }
+      // sendFortuneRequest 함수 끝
+
+      let userMessages = [];
+      let assistantMessages = [];
+
+      async function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        // 사용자 메세지 가져오기
+        const message = messageInput.value;
+
+        // 채팅 말풍선에 사용자의 메세지 출력
+        const userBubble = document.createElement('div');
+        userBubble.className = 'chat-bubble user-bubble';
+        userBubble.textContent = message;
+        document.getElementById('fortuneResponse').appendChild(userBubble);
+
+        // userMessages에 사용자 메세지 저장
+        userMessages.push(message);
+
+        // 입력 필드 초기화
+        messageInput.value = '';
+
+        const name = document.getElementById('name').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const gender = document.getElementById('gender').value;
+        const birthtime = document.getElementById('birthtime').value;
+
+        if (!name || !birthdate) {
+          alert('이름과 생년월일을 입력해주세요.');
+          return;
+        }
+
+        // 백엔드 서버에 메세지를 보내고 응답 출력
+        try {
+          const response = await fetch('http://localhost:3001/fortuneTell', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: name,
+              birthdate: birthdate,
+              gender: gender,
+              birthtime: birthtime,
+              userMessages: userMessages,
+              assistantMessages: assistantMessages
+            }),
+          });
+
+          if (!response.ok) throw new Error('Request failed with status ' + response.status);
+
+          const data = await response.json();
+          console.log('Response:', data.assistant);
+
+          // 채팅 말풍선에 chatGPT 응답 출력
+          let botBubble = document.createElement('div');
+          botBubble = 'chat-bubble bot-bubble';
+          botBubble.textContent = data.assistant;
+          document.getElementById('fortuneResponse').appendChild(botBubble);
+
+          // assistantMessages에 챗GPT의 메세지 저장
+          assistantMessages.push(data.assistant);
+          
+        } catch (error) {
+          console.log(error);
         }
       }
     </script>
