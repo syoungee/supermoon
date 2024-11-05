@@ -158,7 +158,7 @@
               gender: gender,
               birthtime: birthtime,
               userMessages: userMessages,
-              assistantMessages: assistantMessages
+              assistantMessages: assistantMessages,
             }),
           });
 
@@ -168,14 +168,13 @@
           console.log('Response:', data.assistant);
 
           // 채팅 말풍선에 chatGPT 응답 출력
-          let botBubble = document.createElement('div');
-          botBubble = 'chat-bubble bot-bubble';
-          botBubble.textContent = data.assistant;
-          document.getElementById('fortuneResponse').appendChild(botBubble);
+          let botBubble = document.createElement('div'); // let으로 선언하여 DOM 요소 생성
+          botBubble.className = 'chat-bubble bot-bubble'; // 클래스 설정
+          botBubble.textContent = data.assistant; // 텍스트 설정
+          document.getElementById('fortuneResponse').appendChild(botBubble); // 올바른 DOM 요소를 추가
 
           // assistantMessages에 챗GPT의 메세지 저장
           assistantMessages.push(data.assistant);
-          
         } catch (error) {
           console.log(error);
         }
