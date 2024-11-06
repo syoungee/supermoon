@@ -6,19 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>운세 보는 달덩이🌝</title>
     <style>
-      /* 세로 가운데 정렬을 위한 스타일 */
       body {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
         margin: 0;
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
       }
 
       h1 {
         margin-bottom: 20px;
+        color: #4a90e2;
       }
 
       label,
@@ -26,6 +27,100 @@
       input,
       button {
         margin: 5px 0;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #357abd;
+      }
+
+      /* 채팅 컨테이너 스타일 */
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        max-width: 600px;
+        height: 400px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: white;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      /* 채팅 내용 */
+      .chat-content {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* 채팅 말풍선 스타일 */
+      .chat-bubble {
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        line-height: 1.4;
+        word-wrap: break-word;
+      }
+
+      /* 사용자 말풍선 */
+      .user-bubble {
+        align-self: flex-end;
+        background-color: #4a90e2;
+        color: white;
+        border-bottom-right-radius: 0;
+      }
+
+      /* 봇 말풍선 */
+      .bot-bubble {
+        align-self: flex-start;
+        background-color: #eee;
+        color: #333;
+        border-bottom-left-radius: 0;
+      }
+
+      /* 채팅 입력창 스타일 */
+      .chat-input-container {
+        display: flex;
+        border-top: 1px solid #ddd;
+      }
+
+      .chat-input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 0 0 0 10px;
+        outline: none;
+      }
+
+      .send-button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 0 20px;
+        border-radius: 0 0 10px 0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .send-button:hover {
+        background-color: #357abd;
       }
     </style>
   </head>
@@ -65,15 +160,15 @@
 
     <!-- 운세 확인 컨테이너 -->
     <div class="chat-container">
-      <div class="chat-bubble user-bubble">안녕하세요! 운세를 확인 해주세요.</div>
-      <div class="chat-bubble bot-bubble" id="fortuneResponse">
+      <div class="chat-content" id="fortuneResponse">
+        <div class="chat-bubble user-bubble">안녕하세요! 운세를 확인 해주세요.</div>
         <!-- The fortune response will appear here -->
       </div>
-      <input type="text" class="chat-input" id="messageInput" placeholder="메세지를 입력하세요..." />
-      <button class="send-button" onclick="sendMessage()">보내기</button>
+      <div class="chat-input-container">
+        <input type="text" class="chat-input" id="messageInput" placeholder="메세지를 입력하세요..." />
+        <button class="send-button" onclick="sendMessage()">보내기</button>
+      </div>
     </div>
-    <!-- <input type="text" class="chat-input" id="messageInput" placeholder="메세지를 입력하세요..." />
-    <button class="send-button" onclick="sendMessage()">보내기</button> -->
 
     <script>
       async function sendFortuneRequest() {
